@@ -2,7 +2,7 @@
 
 import asynchttpserver, asyncdispatch
 import sugar
-import ../router
+import router
 
 export asynchttpserver, asyncdispatch
 export sugar
@@ -34,13 +34,26 @@ type Rvn* = object
   router*:     Router
   httpServer*: AsyncHttpServer
 
-func findRoute*(
+import utilities
+proc findRoute*(
   this: Router,
   path: string
 ) : Handler =
+
+  var basepath = path
+
+  echo "routes ", this.routes[1].path
+  echo "path   ", path
+
+
+  # echo split_last("aaa/aaa/aaa", '/')
+  
   for route in this.routes.items:
-    if route.path == path:
+    if route.path == basepath:
       return route.handler
+    elif split_last(basepath, '/') == route.path:
+      return route.handler
+      
   return notFoundHandler
 
 proc handleRequest*(

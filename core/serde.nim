@@ -44,6 +44,14 @@ proc serde*[T](query: string, target: T): T =
 
   return (%ordered).to T
 
+proc parse_url*(path: string): string=
+  var bpath = path.split(":")[0]
+  var param = path.split(":")[1]
+
+  var path = bpath & param
+  # echo param
+  return bpath
+
 
 when isMainModule:
 
